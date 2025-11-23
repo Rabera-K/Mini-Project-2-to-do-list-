@@ -10,6 +10,7 @@
   --priority-1: #ff4c4c;
   --priority-2: #f1a22b;
   --priority-3: #6cd463;
+  --muted: #b3b3b3;
 }
 * {
   margin: 0;
@@ -26,9 +27,9 @@ body {
   font-size: 1.2rem;
   font-family: "Inter", sans-serif;
   font-weight: 400;
-  height: 100vh;
   color: #292828;
   background: linear-gradient(to bottom right, #edddf1 30%, #af9abb 70%);
+  height: 100vh;
 }
 .todo-main {
   width: 100%;
@@ -36,13 +37,21 @@ body {
   margin: 100px auto 20px;
   background: var(--background-main);
   border-radius: 20px;
+
+  display: flex;
+  flex-direction: column;
+  position: relative;
 }
+
 .upper-section {
   background-color: var(--background-card);
   padding: 40px 30px 0;
   border-radius: 20px 20px 0 0;
+  margin-bottom: 20px;
 }
-
+/*--------------
+ THE title AND DAY'S DATE 
+ ---------------*/
 .header-top {
   display: flex;
   justify-content: space-between;
@@ -68,6 +77,9 @@ h2 {
   gap: 3px;
   align-items: center;
 }
+/*-----------
+THE CALENDAR
+------------- */
 .top-date {
   color: var(--text-secondary);
   text-transform: uppercase;
@@ -110,3 +122,145 @@ h2 {
 .selected .day-number {
   color: #fff;
 }
+
+/* ---------------
+TASK CARD STYLING
+--------------- */
+.task-card {
+  background: var(--background-card);
+  margin: 12px;
+  display: flex;
+  padding: 0 20px;
+  border-radius: 10px;
+  align-items: center;
+  position: relative;
+}
+.delete-btn {
+  position: absolute;
+  right: -60px;
+  top: 0;
+  height: 100%;
+  background: var(--primary);
+  color: var(--background-card);
+  border: none;
+  padding: 0 20px;
+  border-radius: 0 10px 10px 0;
+  opacity: 0;
+  transition: 0.3s;
+}
+.task-card:hover .delete-btn {
+  right: 0;
+  opacity: 1;
+}
+.todo-list {
+  padding: 16px;
+  padding-right: 0;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+.todo-text,
+.task-description,
+.task-time {
+  font-size: 1.6rem;
+}
+.todo-text {
+  color: var(--text-primary);
+  font-weight: 600;
+  /* margin-bottom: 1rem; */
+}
+.task-description {
+  color: var(--text-secondary);
+  font-weight: 400;
+  margin-bottom: 2.4rem;
+}
+.task-time {
+  color: var(--secondary);
+  font-weight: 600;
+}
+.custom-checkbox {
+  border: 2px solid var(--priority-2);
+  border-radius: 50%;
+  min-height: 20px;
+  min-width: 20px;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+input[type="checkbox"]:checked ~ .custom-checkbox {
+  background: var(--priority-2);
+}
+input[type="checkbox"]:checked ~ .custom-checkbox svg {
+  fill: var(--background-card);
+}
+input[type="checkbox"]:checked ~ .todo-list .todo-text {
+  text-decoration: line-through;
+  color: var(--muted);
+}
+input[type="checkbox"]:checked ~ .todo-list .task-description {
+  text-decoration: line-through;
+  color: var(--muted);
+}
+input[type="checkbox"]:checked ~ .todo-list .task-time {
+  color: var(--muted);
+}
+input[type="checkbox"] {
+  display: none;
+}
+
+/* ---------------
+BUTTONS
+------------------- */
+.add-btn {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  width: 60px;
+  height: 60px;
+  font-size: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* completed */
+.completed-list {
+  overflow-y: auto;
+  padding-bottom: 70px;
+}
+
+summary {
+  font-size: 1.6rem;
+  padding: 20px;
+  color: var(--muted);
+  text-transform: uppercase;
+  list-style: none;
+  cursor: pointer;
+  position: relative;
+  padding-right: 24px;
+}
+
+summary::-webkit-details-marker {
+  display: none;
+}
+
+/* summary::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  top: 0.2em;
+  width: 24px;
+  height: 24px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 -960 960 960' fill='%23e3e3e3'%3E%3Cpath d='M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z'/%3E%3C/svg%3E");
+}
+summary.open::marker {
+  transform: rotate(180deg);
+}
+
+details[open] summary::after {
+  background-image: url("data:image/svg+xml;utf8,<svg fill='#b3b3b3' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' d='M14.77 12.79a.75.75 0 01-1.06-.02L10 9.33 6.29 12.77a.75.75 0 11-1.04-1.08l4.23-3.92a.75.75 0 011.04 0l4.23 3.92a.75.75 0 01.02 1.08z' clip-rule='evenodd'/></svg>");
+} */

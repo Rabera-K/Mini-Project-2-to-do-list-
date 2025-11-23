@@ -78,21 +78,26 @@
             height="24px"
             viewBox="0 -960 960 960"
             width="24px"
-            fill="#e3e3e3"
+            fill="transparent"
           >
             <path
               d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"
             /></svg
         ></label>
-        <label for="todo-1" class="todo-text">Finish the bloody UI</label>
-        <span class="task-time">7:00 PM</span>
+
+        <div class="todo-list">
+          <label for="todo-1" class="todo-text">Finish the bloody UI</label>
+          <p class="task-description">This will just have to effin work</p>
+          <span class="task-time">7:00 PM</span>
+        </div>
+
         <button class="delete-btn">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            height="24px"
+            height="40px"
             viewBox="0 -960 960 960"
-            width="24px"
-            fill="#e3e3e3"
+            width="40px"
+            fill="#fff"
           >
             <path
               d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"
@@ -114,21 +119,61 @@
                   height="24px"
                   viewBox="0 -960 960 960"
                   width="24px"
-                  fill="#e3e3e3"
+                  fill="transparent"
                 >
                   <path
                     d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"
                   /></svg
               ></label>
-              <label for="todo-3" class="todo-text">Finish the bloody UI</label>
-              <span class="task-time">7:00 PM</span>
+
+              <div class="todo-list">
+                <label for="todo-3" class="todo-text">Overwhelmed!?</label>
+                <p class="task-description">Coming along quite nicely</p>
+                <span class="task-time">10:00 PM</span>
+              </div>
               <button class="delete-btn">
                 <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="40px"
+                  viewBox="0 -960 960 960"
+                  width="40px"
+                  fill="#fff"
+                >
+                  <path
+                    d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div class="task-card completed">
+              <input type="checkbox" id="todo-4" class="task-checkbox" />
+              <label class="custom-checkbox" for="todo-4"
+                ><svg
                   xmlns="http://www.w3.org/2000/svg"
                   height="24px"
                   viewBox="0 -960 960 960"
                   width="24px"
-                  fill="#e3e3e3"
+                  fill="transparent"
+                >
+                  <path
+                    d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"
+                  /></svg
+              ></label>
+
+              <div class="todo-list">
+                <label for="todo-4" class="todo-text"
+                  >And I'm almost there</label
+                >
+                <p class="task-description">Coming along quite nicely part 2</p>
+                <span class="task-time">10:00 PM</span>
+              </div>
+              <button class="delete-btn">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="40px"
+                  viewBox="0 -960 960 960"
+                  width="40px"
+                  fill="#fff"
                 >
                   <path
                     d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"
@@ -140,7 +185,7 @@
         </details>
       </section>
       <!-- empty to-do page -->
-      <div class="todo-image"><img src="#" alt="add task" /></div>
+      <!-- <div class="todo-image"><img src="#" alt="add task" /></div> -->
 
       <!-- add task button -->
       <button class="add-btn" aria-label="add a task">+</button>
