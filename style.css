@@ -1,14 +1,15 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
 
 :root {
-  --background-main: #fafafa;
+  --background-main: #e2e1e1;
   --background-card: #fff;
   --text-primary: #313030;
   --text-secondary: #6e6c6c;
   --primary: #ff7c7c;
+  --secondary: #683ce0;
   --priority-1: #ff4c4c;
-  --priority-2: green;
-  --priority-3: yellow;
+  --priority-2: #f1a22b;
+  --priority-3: #6cd463;
 }
 * {
   margin: 0;
@@ -22,6 +23,7 @@ html {
 }
 
 body {
+  font-size: 1.6rem;
   font-family: "Inter", sans-serif;
   font-weight: 400;
   height: 100vh;
@@ -33,6 +35,39 @@ body {
   max-width: 600px;
   margin: 100px auto 20px;
   background: var(--background-main);
+  border-radius: 20px;
+}
+.upper-section {
+  background-color: var(--background-card);
   padding: 40px 30px 70px;
-  border-radius: 10px;
+  border-radius: 20px 20px 0 0;
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+h2 {
+  font-size: 2.4rem;
+  color: var(--text-primary);
+}
+.calendar-btn {
+  background: none;
+  border: none;
+  padding: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.right-items {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+}
+.top-date {
+  color: var(--text-secondary);
 }
