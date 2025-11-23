@@ -3,8 +3,8 @@
 :root {
   --background-main: #e2e1e1;
   --background-card: #fff;
-  --text-primary: #313030;
-  --text-secondary: #6e6c6c;
+  --text-primary: #494949;
+  --text-secondary: #7a7a7a;
   --primary: #ff7c7c;
   --secondary: #683ce0;
   --priority-1: #ff4c4c;
@@ -23,7 +23,7 @@ html {
 }
 
 body {
-  font-size: 1.6rem;
+  font-size: 1.2rem;
   font-family: "Inter", sans-serif;
   font-weight: 400;
   height: 100vh;
@@ -32,21 +32,21 @@ body {
 }
 .todo-main {
   width: 100%;
-  max-width: 600px;
+  max-width: 740px;
   margin: 100px auto 20px;
   background: var(--background-main);
   border-radius: 20px;
 }
 .upper-section {
   background-color: var(--background-card);
-  padding: 40px 30px 70px;
+  padding: 40px 30px 0;
   border-radius: 20px 20px 0 0;
 }
 
 .header-top {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 2rem;
+  margin-bottom: 2.4rem;
   width: 100%;
 }
 
@@ -70,4 +70,43 @@ h2 {
 }
 .top-date {
   color: var(--text-secondary);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.calendar-days {
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+  gap: 0;
+}
+.day {
+  display: flex;
+  flex-direction: column;
+  width: 80px;
+  height: 80px;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+  padding: 16px 20px 20px;
+}
+.day-name {
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+.day-number {
+  color: var(--text-primary);
+  font-size: 2.4rem;
+  font-weight: 700;
+}
+.day.selected {
+  background: #683ce0;
+  border-radius: 10px 10px 0 0;
+}
+
+.selected .day-name {
+  color: #fff;
+}
+.selected .day-number {
+  color: #fff;
 }
