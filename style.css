@@ -21,6 +21,8 @@
 html {
   font-size: 62.5%;
   box-sizing: border-box;
+  height: 100%;
+  overflow: hidden;
 }
 
 body {
@@ -29,6 +31,8 @@ body {
   font-weight: 400;
   color: #292828;
   background: linear-gradient(to bottom right, #edddf1 30%, #af9abb 70%);
+  height: 100%;
+  overflow: auto;
   height: 100vh;
 }
 .todo-main {
@@ -208,6 +212,25 @@ input[type="checkbox"] {
   display: none;
 }
 
+/* completed */
+.completed-list {
+  overflow-y: auto;
+  padding-bottom: 70px;
+}
+
+summary {
+  font-size: 1.6rem;
+  padding: 20px;
+  color: var(--muted);
+  text-transform: uppercase;
+  list-style: none;
+  cursor: pointer;
+  padding-right: 24px;
+}
+
+summary::-webkit-details-marker {
+  display: none;
+}
 /* ---------------
 BUTTONS
 ------------------- */
@@ -223,27 +246,6 @@ BUTTONS
   font-size: 30px;
   border-radius: 50%;
   cursor: pointer;
-}
-
-/* completed */
-.completed-list {
-  overflow-y: auto;
-  padding-bottom: 70px;
-}
-
-summary {
-  font-size: 1.6rem;
-  padding: 20px;
-  color: var(--muted);
-  text-transform: uppercase;
-  list-style: none;
-  cursor: pointer;
-  position: relative;
-  padding-right: 24px;
-}
-
-summary::-webkit-details-marker {
-  display: none;
 }
 
 /* summary::after {
