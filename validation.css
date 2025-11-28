@@ -44,6 +44,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 20px;
 }
 h1 {
   font-size: 3rem;
@@ -136,4 +137,13 @@ a:hover {
     width: min(600px, 100%);
     border-radius: 0;
   }
+}
+form div.incorrect label {
+  background-color: #db5858;
+}
+form div.incorrect input {
+  border-color: #db5858;
+}
+#error-message {
+  color: #db5858;
 }
