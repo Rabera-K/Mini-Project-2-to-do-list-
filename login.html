@@ -41,10 +41,16 @@
           />
         </div>
 
-        <button>Login</button>
+        <button type="submit">Login</button>
       </form>
       <p>New here?<a href="signup.html">Create an Account</a></p>
     </div>
+    <script src="auth-service.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        AuthService.redirectIfLoggedIn();
+      });
+    </script>
     <script type="text/javascript" src="validation.js"></script>
   </body>
 </html>
