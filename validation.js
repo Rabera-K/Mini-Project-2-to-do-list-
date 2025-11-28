@@ -53,12 +53,26 @@ function getSignupFormErrors(firstname, email, password, repeatpassword) {
   }
   return errors;
 }
+
+function getLoginFormErrors(email, password) {
+  let errors = [];
+
+  if (email === "" || email == null) {
+    errors.push("Email is required");
+    emailInput.parentElement.classList.add("incorrect");
+  }
+  if (password === "" || password == null) {
+    errors.push("Password is required");
+    passwordInput.parentElement.classList.add("incorrect");
+  }
+  return errors;
+}
 const allInputs = [
   firstnameInput,
   emailInput,
   passwordInput,
   repeatPasswordInput,
-];
+].filter((input) => input != null);
 
 allInputs.forEach((input) => {
   input.addEventListener("input", () => {
