@@ -278,6 +278,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Initialize theme
     initTheme();
+
+    //   notification
+    startNotificationSystem();
   }
 
   function initTheme() {
@@ -825,6 +828,59 @@ document.addEventListener("DOMContentLoaded", function () {
     const ampm = hour >= 12 ? "PM" : "AM";
     const displayHour = hour % 12 || 12;
     return `${displayHour}:${minutes} ${ampm}`;
+  }
+
+  function startNotificationSystem() {
+    // check for due tasks every minute
+    setInterval(() => {
+      const now = new Date();
+
+      tasks.forEach((task) => {
+        if (task.completed) return;
+
+        if (isTaskOverdue(task, now)) {
+          showAlert(task);
+        }
+      });
+    }, 60000); //check every minute
+
+    // check immediately on load after a short delay
+    setTimeout(() => {
+      const now = new Date();
+      tasks.forEach((task) => {
+        if (task.completed) return;
+        if (isTaskOverdue(task, now)) {
+          showAlert(task);
+        }
+      });
+    }, 3000);
+  }
+
+  function istaskDue(task, currentTime = new date()) {
+    if (task.completed) return false;
+
+    const taskDate = new Date(task.date);
+    const taskDateTime = new Date(taskDate);
+
+    if (task.time) {
+      const [hours, minutes] = task.time.split(":").map(Number);
+      taskDateTime.setHours(hours, minutes, 0, 0);
+    } else {
+      taskDateTime.setHours(0, 0, 0, 0);
+    }
+
+    return currentTime >= taskDateTime;
+  }
+
+  function showAlert(task) {
+    const taskDate = new Date(task.date);
+    const dueDate = taskDate.toLocaleDateString();
+
+    alert(
+      `📅 Task Due now!\n\n"${task.title}"\n\nDue: ${dueDate}${
+        task.time ? " at " + formatTime(task.time) : ""
+      }`
+    );
   }
 });
 
