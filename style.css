@@ -29,7 +29,7 @@
   /* background: linear-gradient(to bottom right, #3a2a42 30%, #2d1e35 70%); */
 }
 [data-theme="dark"] body {
-  background-image: url(UI-Inspo/dark-p.jpg);
+  background-image: url(UI-Inspo/dark.jpg);
   background-size: cover;
 }
 [data-theme="dark"] .todo-main {
