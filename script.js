@@ -31,10 +31,10 @@ document.addEventListener("DOMContentLoaded", function () {
   let selectedPriority = 2;
   let calendarViewDate = new Date();
 
-  // ==================== API CONFIGURATION ====================
+  //  API CONFIGURATION
   const API_BASE_URL = "https://x8ki-letl-twmt.n7.xano.io/api:ksKp7BtD";
 
-  // == MODAL CLOSE FUNCTIONALITY ====================
+  //  MODAL CLOSE FUNCTIONALITY
 
   function setupModalCloseListeners() {
     // Close modals on Escape key
@@ -46,7 +46,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Close modals when clicking outside
     document.addEventListener("click", (e) => {
-      // Close task modal when clicking outside
       if (taskModal && taskModal.style.display === "flex") {
         if (e.target === taskModal) {
           closeTaskModal();
@@ -84,14 +83,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (response.ok) {
         const tasksData = await response.json();
+        console.log("=== LOAD FROM API ON REFRESH ===");
         console.log("Raw tasks from Xano:", tasksData);
 
-        // SIMPLE TRANSFORMATION - only what's absolutely necessary
         tasks = tasksData.map((task) => ({
           // Keep all original fields
           ...task,
           // Only transform the essential ones
-          completed: task.is_complete,
+          completed: task.completed,
           date: new Date(task.created_at),
           time: task.time ? timestampToTimeString(task.time) : "",
         }));
@@ -130,7 +129,7 @@ document.addEventListener("DOMContentLoaded", function () {
         title: task.title,
         description: task.description,
         priority: task.priority,
-        // Xano will set created_at automatically for new tasks
+        completed: task.completed,
         time: task.time ? timeStringToTimestamp(task.time, task.date) : null,
       };
 
@@ -162,12 +161,14 @@ document.addEventListener("DOMContentLoaded", function () {
   async function updateTaskInAPI(taskId, updates) {
     try {
       const token = localStorage.getItem("token");
-
+      console.log(updates);
       // Only include fields that are being updated
       const xanoUpdates = {};
       if (updates.title !== undefined) xanoUpdates.title = updates.title;
       if (updates.description !== undefined)
         xanoUpdates.description = updates.description;
+      if (updates.completed !== undefined)
+        xanoUpdates.completed = updates.completed;
       if (updates.priority !== undefined)
         xanoUpdates.priority = updates.priority;
       if (updates.time !== undefined) {
@@ -175,21 +176,24 @@ document.addEventListener("DOMContentLoaded", function () {
           ? timeStringToTimestamp(updates.time, updates.date || new Date())
           : null;
       }
+      //   console.log("Sending to Xano:", xanoUpdates);
+      //   console.log("Task ID:", taskId);
 
       const response = await fetch(`${API_BASE_URL}/todo/${taskId}`, {
-        method: "PUT",
+        method: "PATCH",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(xanoUpdates),
       });
+      //   console.log("Response status:", response.status);
 
       const updatedTask = await response.json();
 
       return {
         ...updatedTask,
-        completed: updatedTask.is_complete,
+        completed: updatedTask.completed,
         date: new Date(updatedTask.created_at),
         time: updatedTask.time ? timestampToTimeString(updatedTask.time) : "",
       };
@@ -582,21 +586,29 @@ document.addEventListener("DOMContentLoaded", function () {
 
   async function toggleTaskCompletion(taskId) {
     const task = tasks.find((t) => t.id === taskId);
-    if (task) {
-      try {
-        const updatedCompleted = !task.completed;
 
-        // Update in API first
+    if (task) {
+      // Calculate the new state
+      const newCompletedStatus = !task.completed;
+
+      console.log(
+        `Toggling task ${taskId} from ${task.completed} to ${newCompletedStatus}`
+      );
+
+      // Update local state
+      task.completed = newCompletedStatus;
+
+      try {
+        // Send the new state to API
         await updateTaskInAPI(taskId, {
-          completed: updatedCompleted,
+          completed: newCompletedStatus,
         });
 
-        // Then update local state
-        task.completed = updatedCompleted;
         renderTasks();
       } catch (error) {
         console.error("Failed to update todo:", error);
-        alert("Failed to update task. Please try again.");
+        // Optional: revert local state if API fails
+        task.completed = !newCompletedStatus;
       }
     }
   }
@@ -658,6 +670,11 @@ document.addEventListener("DOMContentLoaded", function () {
       const taskElement = createTaskElement(task);
       completedTasksContainer.appendChild(taskElement);
     });
+
+    // Update counters and empty states
+    completedCountElement.textContent = completedTasks.length;
+    emptyStateElement.style.display =
+      tasksForSelectedDate.length === 0 ? "flex" : "none";
   }
 
   function createTaskElement(task) {
