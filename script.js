@@ -221,7 +221,7 @@ document.addEventListener("DOMContentLoaded", function () {
       throw error;
     }
   }
-  // ==================== END API SERVICE FUNCTIONS ====================
+  // = END API SERVICE FUNCTIONS =
 
   // Initialize the app
   initApp();
@@ -384,6 +384,72 @@ document.addEventListener("DOMContentLoaded", function () {
       date1.getMonth() === date2.getMonth() &&
       date1.getFullYear() === date2.getFullYear()
     );
+  }
+  function isTaskOverdue(task) {
+    if (task.completed) return false;
+
+    const taskDate = new Date(task.date);
+    const today = new Date();
+
+    const taskDateOnly = new Date(
+      taskDate.getFullYear(),
+      taskDate.getMonth(),
+      taskDate.getDate()
+    );
+    const todayOnly = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate()
+    );
+
+    if (taskDateOnly < todayOnly) {
+      return true;
+    }
+    if (taskDateOnly.getTime() === todayOnly.getTime() && task.time) {
+      const [taskHours, taskMinutes] = task.time.split(":").map(Number);
+      const currentHours = today.getHours();
+      const currentMinutes = today.getMinutes();
+
+      if (
+        currentHours > taskHours ||
+        (currentHours === taskHours && currentMinutes > taskMinutes)
+      ) {
+        return true;
+      }
+    }
+    return false;
+  }
+  function getOverdueTime(task) {
+    if (!isTaskOverdue(task)) return null;
+
+    const taskDate = new Date(task.date);
+    const now = new Date();
+
+    // if task has a time, use it for calculation
+    if (task.time) {
+      const [taskHours, taskMinutes] = task.time.split(":").map(Number);
+      taskDate.setHours(taskHours, taskMinutes, 0, 0);
+    } else {
+      // if no time specified, consider the task overdue at end of day
+      taskDate.setHours(23, 59, 59, 999);
+    }
+
+    const overdueMs = now - taskDate;
+    const overdueDays = Math.floor(overdueMs / (1000 * 60 * 60 * 24));
+    const overdueHours = Math.floor(
+      (overdueMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+    );
+    const overdueMinutes = Math.floor(
+      (overdueMs % (1000 * 60 * 60)) / (1000 * 60)
+    );
+
+    if (overdueDays > 0) {
+      return `${overdueDays} day${overdueDays > 1 ? "s" : ""} ago`;
+    } else if (overdueHours > 0) {
+      return `${overdueHours} hour${overdueHours > 1 ? "s" : ""} ago`;
+    } else {
+      return `${overdueMinutes} minute${overdueMinutes > 1 ? "s" : ""} ago`;
+    }
   }
 
   function openAddTaskModal() {
@@ -649,6 +715,9 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
     const activeTasks = tasksForSelectedDate.filter((task) => !task.completed);
+    const overdueTasks = activeTasks.filter((task) => isTaskOverdue(task));
+    const nonOverdueTasks = activeTasks.filter((task) => !isTaskOverdue(task));
+    const sortedActiveTasks = [...overdueTasks, ...nonOverdueTasks];
     const completedTasks = tasksForSelectedDate.filter(
       (task) => task.completed
     );
@@ -661,7 +730,8 @@ document.addEventListener("DOMContentLoaded", function () {
       emptyStateElement.style.display = "none";
     }
 
-    activeTasks.forEach((task) => {
+    // NEW: Render sorted active tasks (overdue first)
+    sortedActiveTasks.forEach((task) => {
       const taskElement = createTaskElement(task);
       activeTasksContainer.appendChild(taskElement);
     });
@@ -682,34 +752,52 @@ document.addEventListener("DOMContentLoaded", function () {
     taskElement.className = `task-card priority-${task.priority || 2}`;
     if (task.completed) taskElement.classList.add("completed");
 
+    // NEW: Add overdue class and styling
+    const isOverdue = isTaskOverdue(task);
+    if (isOverdue) {
+      taskElement.classList.add("overdue");
+    }
+
+    const overdueTime = isOverdue ? getOverdueTime(task) : null;
+
     taskElement.innerHTML = `
-        <input type="checkbox" id="todo-${task.id}" class="task-checkbox" ${
+      <input type="checkbox" id="todo-${task.id}" class="task-checkbox" ${
       task.completed ? "checked" : ""
     }>
-        <label class="custom-checkbox" for="todo-${task.id}">
-          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="transparent">
-            <path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/>
-          </svg>
-        </label>
-        <div class="todo-list">
-          <label for="todo-${task.id}" class="todo-text">${task.title}</label>
-          ${
-            task.description
-              ? `<p class="task-description">${task.description}</p>`
-              : ""
-          }
-          ${
-            task.time
-              ? `<span class="task-time">${formatTime(task.time)}</span>`
-              : ""
-          }
-        </div>
-        <button class="delete-btn" type="button">
-          <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#fff">
-            <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/>
-          </svg>
-        </button>
-      `;
+      <label class="custom-checkbox" for="todo-${task.id}">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="transparent">
+          <path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/>
+        </svg>
+      </label>
+      <div class="todo-list">
+        <label for="todo-${task.id}" class="todo-text ${
+      isOverdue ? "overdue-text" : ""
+    }">${task.title}</label>
+        ${
+          task.description
+            ? `<p class="task-description ${isOverdue ? "overdue-text" : ""}">${
+                task.description
+              }</p>`
+            : ""
+        }
+        ${
+          task.time
+            ? `<span class="task-time ${
+                isOverdue ? "overdue-time" : ""
+              }">${formatTime(task.time)}${
+                overdueTime ? ` • ${overdueTime}` : ""
+              }</span>`
+            : overdueTime
+            ? `<span class="task-time overdue-time">${overdueTime}</span>`
+            : ""
+        }
+      </div>
+      <button class="delete-btn" type="button">
+        <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#fff">
+          <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/>
+        </svg>
+      </button>
+    `;
 
     const checkbox = taskElement.querySelector(".task-checkbox");
     checkbox.addEventListener("change", () => toggleTaskCompletion(task.id));
