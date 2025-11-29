@@ -34,7 +34,8 @@ document.addEventListener("DOMContentLoaded", function () {
   // ==================== API CONFIGURATION ====================
   const API_BASE_URL = "https://x8ki-letl-twmt.n7.xano.io/api:ksKp7BtD";
 
-  // ==================== MODAL CLOSE FUNCTIONALITY ====================
+  // == MODAL CLOSE FUNCTIONALITY ====================
+
   function setupModalCloseListeners() {
     // Close modals on Escape key
     document.addEventListener("keydown", (e) => {
@@ -69,10 +70,10 @@ document.addEventListener("DOMContentLoaded", function () {
   function closeCalendarModal() {
     if (calendarModal) calendarModal.style.display = "none";
   }
-  // ==================== END MODAL CLOSE FUNCTIONALITY ====================
+  // == END MODAL CLOSE FUNCTIONALITY ==
 
-  // ==================== API SERVICE FUNCTIONS ====================
-  // ==================== SIMPLIFIED DATA TRANSFORMATION ====================
+  // == API SERVICE FUNCTIONS ==
+  // == SIMPLIFIED DATA TRANSFORMATION ==
 
   async function loadTasksFromAPI() {
     try {
@@ -601,11 +602,16 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   async function deleteTask(taskId) {
-    try {
-      // Delete from API first
-      await deleteTaskFromAPI(taskId);
+    // Adding confirmation dialog
+    const task = tasks.find((t) => t.id === taskId);
+    const confirmed = confirm(
+      `Are you sure you want to delete "${task.title}"?`
+    );
 
-      // Then update local state
+    if (!confirmed) return;
+
+    try {
+      await deleteTaskFromAPI(taskId);
       tasks = tasks.filter((t) => t.id !== taskId);
       renderTasks();
     } catch (error) {
@@ -613,8 +619,6 @@ document.addEventListener("DOMContentLoaded", function () {
       alert("Failed to delete task. Please try again.");
     }
   }
-
-  // REMOVED: saveTasksToLocalStorage() function - no longer needed
 
   function renderTasks() {
     if (
