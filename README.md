@@ -34,3 +34,8 @@ Alerts for overdue tasks (also shown in the notification section)
 🌙 Light & Dark Mode
 Prefer a different vibe?
 Switch between light mode and dark mode using the little star-looking toggle icon.
+
+🛠️Technologies Used
+Vanilla JavaScript
+Vanilla CSS
+HTML
