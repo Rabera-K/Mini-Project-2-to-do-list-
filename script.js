@@ -882,6 +882,13 @@ document.addEventListener("DOMContentLoaded", function () {
       }`
     );
   }
+
+  const logoutBtn = document.getElementById("logoutBtn");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+      AuthService.logout();
+    });
+  }
 });
 
 function enableHorizontalScroll(element) {

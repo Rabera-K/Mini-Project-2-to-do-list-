@@ -56,8 +56,8 @@ class AuthService {
         throw new Error(errorData.message || "Login failed");
       }
 
-        const data = await response.json();
-        console.log(data);
+      const data = await response.json();
+      console.log(data);
 
       // Store token and user data (adjust based on Xano's response structure)
       localStorage.setItem("token", data.authToken || data.token);
