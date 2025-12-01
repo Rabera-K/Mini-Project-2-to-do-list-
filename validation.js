@@ -53,7 +53,7 @@ form.addEventListener("submit", async (e) => {
   }
 });
 
-// ==================== BACKEND INTEGRATION ====================
+//  BACKEND INTEGRATION
 
 async function handleSignup(firstname, email, password) {
   try {

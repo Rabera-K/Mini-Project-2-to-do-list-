@@ -645,3 +645,27 @@ summary::-webkit-details-marker {
   background-color: rgba(255, 107, 107, 0.2) !important;
   color: #ff6b6b !important;
 }
+#logoutBtn {
+  margin-top: 10px;
+  border: none;
+  border-radius: 1000px;
+  padding: 0.85em 2em;
+  background-color: var(--secondary);
+  color: var(--background-card);
+  font: inherit;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: 150ms ease;
+  position: fixed;
+  bottom: 50;
+  margin-right: 50;
+  z-index: 999;
+}
+#logoutBtn:hover {
+  background-color: var(--text-primary);
+}
+#logoutBtn:focus {
+  outline: none;
+  background-color: var(--text-primary);
+}
