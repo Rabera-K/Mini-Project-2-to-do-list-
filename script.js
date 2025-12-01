@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const themeToggle = document.getElementById("theme-toggle");
 
   // State variables
-  let tasks = []; // Start with empty array - no localStorage
+  let tasks = [];
   let currentEditingTaskId = null;
   let selectedDate = new Date();
   let selectedPriority = 2;
@@ -69,10 +69,6 @@ document.addEventListener("DOMContentLoaded", function () {
   function closeCalendarModal() {
     if (calendarModal) calendarModal.style.display = "none";
   }
-  // == END MODAL CLOSE FUNCTIONALITY ==
-
-  // == API SERVICE FUNCTIONS ==
-  // == SIMPLIFIED DATA TRANSFORMATION ==
 
   async function loadTasksFromAPI() {
     try {
